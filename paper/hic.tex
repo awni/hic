@@ -1,0 +1,42 @@
+\section{Hierarchical Information Content}
+
+We construct a measure for the structural complexity of a system. As motivated
+in section~\ref{}, the complexity should grow through the compositions of
+ordered and disordered subsystems in a hierarchical structure. At each such
+composition (whether it by order to disorder or disorder to order), the
+complexity grows. Hence we decompose the overall complexity as the sum of the
+complexity at each such composition.
+
+The complexity at each composition is given by the difference in mutual
+information between the higher-level system and that of the subsystem. We
+denote by $X^{\ell}$ the state variable at the $\ell$-th level of the
+hierarchy. The neighborhood of $X^\ell$ is the set $\calN(X^\ell)$ which
+contains the elements used to construct the system at the next level. Following
+\citet{simon1991architecture}, we define the span of a level $d^\ell =
+\left|\calN(X^\ell)\right|$ as the number of elements in the neighborhood. For
+now we assume the span to be constant with a value of two $d^\ell = 2$ for
+every level. We later generalize to larger spans.
+
+The complexity at the composition of level $\ell$ from level $\ell -1$ is
+computed from the squared difference of the mutual information of the
+neighborhood at each level: 
+\begin{equation}
+C_\ell = \left( I(X^\ell, Y^\ell) - I(X^{\ell-1}, Y^{\ell-1}) \right)^2
+\end{equation}
+The mutual information can be computed from the Shannon entropy and conditional
+entropy when $X^\ell$ is discrete or the differential entropy when $X^\ell$ is
+continuous~\citep{cover1999elements}:
+\begin{equation}
+I(X^\ell, Y^\ell) = H(X^\ell) - H(X^\ell \mid Y^\ell) 
+\end{equation}
+
+We use the level complexities $C_\ell$ to construct the overall system complexity. 
+\begin{definition}[Hierarchical Information Content]
+\label{def:hic}
+  The Hierarchical Information Content (HIC) of a hierarchical system $S$ with
+  $L$ levels is given by:
+  \begin{equation}
+    \label{eq:hic}
+    \textrm{HIC}(S) = \sum_{l=1}^L C_\ell = \left( I(X^\ell, Y^\ell) - I(X^{\ell-1}, Y^{\ell-1}) \right)^2.
+  \end{equation}
+\end{definition}

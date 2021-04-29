@@ -1,0 +1,47 @@
+\documentclass[12pt]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[english]{babel}
+\usepackage{booktabs}
+\usepackage[labelfont=bf]{caption}
+\usepackage{epigraph}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[numbers]{natbib}
+\usepackage{parskip}
+\usepackage{subcaption}
+
+\usepackage[
+  colorlinks=true,
+  linkcolor=black,
+  anchorcolor=black,
+  citecolor=black,
+  filecolor=black,
+  menucolor=black,
+  runcolor=black,
+  urlcolor=black]{hyperref}
+
+\newtheorem*{definition}{Definition}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\calN}{\mathcal{N}}
+
+\title{Hierarchical Information Content}
+\author{Awni Hannun\footnote{
+  Send correspondence to
+  \href{mailto:awni.hannun@gmail.com}{awni.hannun@gmail.com}}}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\input{introduction}
+\input{finding_complexity}
+\input{hic}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
