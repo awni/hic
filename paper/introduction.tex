@@ -22,15 +22,17 @@ while the measure of complexity is typically not used as an objective to guide
 the active simulation, it is at least essential to evaluate the post-hoc
 success of the simulation.
 
-Complexity is notoriously ill-defined and difficult to measure objectively. One
-of the challenges in measuring complexity is identifying the ``Goldilock's
-zone'' between total order and total disorder where complexity may reside
-(\emph{c.f.} figure~\ref{fig:complexity_and_entropy}). Information theoretic
-measures such as Shannon entropy~\citep{shannon1948} and Kolmogorov complexity
-(sometimes called Algorithmic Information Content)~\citep{kolmogorov1965,
-solomonoff1964}, are actually measures of randomness. As
-figure~\ref{fig:complexity_and_entropy} illustrates, these measures increase
-monotonically with the disorder of a system.
+Complexity is notoriously ill-defined, subjective, and hence difficult to
+measure quantitatively~\citep{gell2002complexity, mitchell2009complexity,
+wiesner2019measuring}. One of the challenges in measuring complexity is
+identifying the ``Goldilock's zone'' between total order and total disorder
+where complexity may reside (\emph{c.f.}
+figure~\ref{fig:complexity_and_entropy}). Information theoretic measures such
+as Shannon entropy~\citep{shannon1948} and Kolmogorov complexity (sometimes
+called Algorithmic Information Content)~\citep{kolmogorov1965, solomonoff1964},
+are actually measures of randomness. As figure~\ref{fig:complexity_and_entropy}
+illustrates, these measures increase monotonically with the disorder of a
+system.
 
 \begin{figure}
 \centering
@@ -38,3 +40,14 @@ monotonically with the disorder of a system.
 \caption{TODO}
 \label{fig:complexity_and_entropy}
 \end{figure}
+
+Because of this difficulty, many measures of complexity have been
+proposed~\citep{lloyd2001measures}, all with differing trade-offs. Often they
+fail the ``one-hump'' criterion~\citep{adami2002complexity} increasing with
+order or disorder. This is typical of the aforementioned information theoretic
+criteria (Shannon entropy and Kolmogorov complexity) and constructions which
+use them~\citep{lloyd1988complexity}. Other measures which satisfy the one-hump
+test are not easily made operational requiring either a large degree of
+subjective input from the designer or are exceedingly difficult to
+compute~\citep{crutchfield1989inferring, gell1996information,
+grassberger1986toward}.
