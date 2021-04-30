@@ -1,28 +1,29 @@
 \section{Finding Complexity}
+\label{sec:finding_complexity}
 
 We hypothesize that complexity grows from the compositions of order and
-disorder.  When a system composes an ordered structure from disordered
-primitives, opportunity for complexity growth emerges. At a higher level many
+disorder.  When a system composes an ordered structure a disordered collection of 
+subsystems, opportunity for complexity growth emerges. At a higher level many
 ordered structures can become disordered. This leads to a hierarchy of levels
 with varying degrees of order and disorder creating a complex macro structure.
 We motivate the idea of inducing complexity from composing order and disorder
 in the sequel, followed by a motivation of the importance of hierarchies. 
 
-\subsection{Order from Disorder}
+\subsection{Order and Disorder}
 
-\citet{adami2002complexity} define two types of complexity: i) {\emph
-structural complexity}, which can be thought of as complexity in space and ii)
-{\emph process complexity}, which can be thought of as complexity in time.
-Following \citet{schrodinger1944}, we consider two types of composition, the
-first is order from order and the second is order from disorder.  \citet[chap.
+\citet{adami2002complexity} define two types of complexity: i) \emph{structural
+complexity}, which can be thought of as complexity in space and ii)
+\emph{process complexity}, which can be thought of as complexity in time.
+Following \citet{schrodinger1944}, we consider two types of composition. The
+first is order from order, and the second is order from disorder.  \citet[chap.
 6]{schrodinger1944} argues that living beings exhibit order from order. In an
-abstract sense, an living organism ``feeds on negative entropy'' (\emph{i.e.}
+abstract sense, a living organism ``feeds on negative entropy'' (\emph{i.e.}
 order) to produce the necessary building blocks needed to reduce the organisms
 natural tendency towards entropy. More concretely, organisms create highly
-structured building blocks at the molecular level (DNA, RNA, proteins,
-\emph{etc.}) by metabolising highly structured inputs. This process describes
-the development of complexity through time. Hence complexity in time (process
-complexity) is involves the composition of order from order. 
+structured subsystems at the molecular level (DNA, RNA, proteins, \emph{etc.})
+by metabolising highly structured inputs. This process describes the
+development of complexity through time. Hence complexity in time (process
+complexity) involves the composition of order from order. 
 
 On the otherhand, complexity in space constructs higher-level structures from
 lower level structures. If the structures are ordered throughout the levels of
@@ -32,15 +33,72 @@ in space (structural complexity) emerges in part from the composition of order
 from disorder.
 
 Given the distinctions between how complexity manifests in time and space two
-separate measures may be appropriate. Here, we are concerned with the later --
-measuring complexity in space. The nexus of complexity growth is found in the
-composition of order from disorder. In order to continue to grow complexity a
-structure must continue to increase the number of such compositions. A
-hierarchy must develop where some levels are more ordered and some are more
-disorderd. This it the primary motivation of our measure of complexity which we
-define more rigorously in section~\ref{sec:hic}.
+separate measures may be appropriate. Here, we are solely concerned with the
+later -- measuring complexity in space. The nexus of complexity growth in space
+is found in the composition of order from disorder. In order to continue to
+grow complexity a structure must continue to increase the number of such
+compositions. A hierarchy must develop where some levels are more ordered and
+some are more disorderd. This is the primary motivation of our measure of
+complexity which we define more rigorously in section~\ref{sec:hic}.
 
-\subsection{Complexity in Hierarchies}
+\subsection{Hierarchical Systems and Complexity}
 
-We now consider the importance of hierarchy in complexity. inducing composition
-of order from disorder
+Many complex systems found in nature, both biotic and abiotic, have a
+hierarchical structure. For example, the hierarchical structure of a cell
+begins follows in succession from atoms to molecules, then marcomolecules, then
+organelles. Cells themselves aggregate into multicellular constructs which form
+organs which result in human beings. Social systems almost always have
+hierarchical structure. A complex business consists of individual workers,
+teams, departments, business units, subsidiaries, and finally the full company.
+The abiotic galactic system is structured as a hierarchy consisting of
+planets, solar systems, star clusters, galaxies, and even galactic clusters.
+
+Following \citet{simon1991architecture}, we give an explanation for why complex
+systems in nature are much more likely to be hierarchical than not. Emergent
+and stable structure must devlop faster than the entropy increasing tendency of
+nature. An attempt to assemble a complex structure which begins from scratch
+and is stable only upon completion is unlikely to succeed. More likely to work
+is an assembly through the stepping stones of intermediate and stable
+subsystems. The stable subsystems can be assembled quickly, so they are less
+likely to be thwarted by increasing entropy. The subsystems can be used to
+rapidly assemble a larger more complex stable system.
+
+\citet{cairns1995complexity} argues that since evolution proceeds by small
+mutations a scaffold of sorts is required to develop complex structures. Once
+the complex structure is functional the scaffold can be lost without harm. With
+the scaffold lost, evolution must proceed in a forward, complexity increasing
+direction to further optimize an organism to a niche. This so-called
+``complexity ratchet'' gives both a mechanism to enable complexity growth and
+an explanation for why the growth appears to be monotonic. In terms of
+hierarchical structure, the scaffolding can be thought of as a structure which
+holds together subsystems.  When a reproductive advantage emerges from the
+combination of the subsystems, the scaffolding can fall away resulint in a more
+complex and hierarchical structure.
+
+The process of using subsystems to create more complex larger systems is well
+documented in evolution and the history of life. For example most of the
+``major transitions''\footnote{These include the compartmentalization of
+molecules, the hypothesized aggregation of RNA into Chromosomes, the
+hypothesized symbiosis of two Prokaryotic cells into the Eukaryotic cell,
+unicellular to multicellular organisms, individuals to colonies, and small
+human groups to human societies.} in the evolution of life involve the
+construction of a higher-level organism from lower level
+components~\citep{smith1997major}. Using the fossil record as evidence,
+\citet{mcshea2001hierarchical} demonstrates an increase in the maximum
+hierarchical structure (the number of nested levels) found in organisms over
+the course of evolution.\footnote{Curiously \citet{mcshea2001hierarchical} also
+finds evidence for an increase in the rate of increase in the maximum
+hierarchical structure. An optimistic implication is that an increase in
+hierarchical complexity leads to an increase in the evolvability of an
+organism.}  
+
+Complexity via composition and hierarchy has been demonstrated in simulations
+of artificial chemistries~\citep{rasmussen2001ansatz, sayama2019cardinality}.
+\citet{rasmussen2001ansatz} state as an ansatz that a sufficiently
+complex set of subsystems is both necessary and sufficient for hierarchical
+complexity to emerge. \citet{sayama2019cardinality} suggests that the
+composition of lower-level primitives into higher-level structure results in a
+``cardinality leap''. A finite set of building blocks can yield a countably
+infinite set of higher-level structures. This provides an explanation for why
+higher-level structure can be correlated with an increase in complexity,
+particularly in the presence of natural selection.

@@ -24,8 +24,13 @@
   urlcolor=black]{hyperref}
 
 \newtheorem*{definition}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\calN}{\mathcal{N}}
+\newcommand{\hic}{\textrm{HIC}}
 
 \title{Hierarchical Information Content}
 \author{Awni Hannun\footnote{
@@ -36,6 +41,19 @@
 
 \begin{document}
 \maketitle
+
+\begin{abstract}
+  As simulations of digital life increase in scale, identifying interesting
+  emergent structures and processes becomes a challenge.  Solving this will
+  require quantitative criteria which align with the goals of the system
+  designer. Such criteria are usually reduced to a measure of complexity. We
+  argue that complexity growth is induced at the composition of order and
+  disorder. Hierarchies built from such compositions lead to further increasing
+  complexity. We use these observations to motivate a new definition
+  complexity: \emph{hierarchical information content}. We demonstrate through
+  quantitative examples and experiments on elementary cellular automata that
+  hierarchical information content yields a useful measure of complexity.
+\end{abstract}
 
 \input{introduction}
 \input{finding_complexity}
