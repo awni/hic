@@ -22,12 +22,13 @@ The complexity at the composition of level $\ell$ from level $\ell -1$ is
 computed from the squared difference of the mutual information of the
 neighborhood at each level:
 \begin{equation}
-C_\ell = \left( I(X^\ell; Y^\ell) - I(X^{\ell-1}; Y^{\ell-1}) \right)^2
+  C_\ell = \left[ I(X^{\ell+1}; Y^{\ell+1}) - I(X^\ell; Y^\ell) \right]^2
 \end{equation}
 The mutual information can be computed from the Shannon entropy and conditional
 entropy when $X^\ell$ is discrete or the differential entropy when $X^\ell$ is
 continuous~\citep{cover1999elements}:
 \begin{equation}
+\label{eq:mutual_information}
 I(X^\ell; Y^\ell) = H(X^\ell) - H(X^\ell \mid Y^\ell)
 \end{equation}
 
@@ -38,7 +39,7 @@ We use the level complexities $C_\ell$ to construct the overall system complexit
   $L$ levels is given by:
   \begin{equation}
     \label{eq:hic}
-    \hic(S) = \sum_{l=1}^L C_\ell = \left( I(X^\ell; Y^\ell) - I(X^{\ell-1}; Y^{\ell-1}) \right)^2.
+    \hic(S) = \sum_{l=1}^{L-1} C_\ell = \sum_{l=1}^{L-1} \left[ I(X^{\ell+1}; Y^{\ell+1}) - I(X^\ell; Y^\ell) \right]^2.
   \end{equation}
 \end{definition}
 

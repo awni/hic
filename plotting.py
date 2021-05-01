@@ -12,16 +12,21 @@ tex_fonts = {
     # Use LaTeX to write all text
     "text.usetex": True,
     "font.family": "serif",
-    "axes.labelsize": 14,
-    "font.size": 14,
+    "axes.labelsize": 18,
+    "font.size": 18,
     # Make the legend/label fonts a little smaller
-    "legend.fontsize": 12,
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12
+    "legend.fontsize": 14,
+    "xtick.labelsize": 16,
+    "ytick.labelsize": 16
 }
 
 plt.rcParams.update(tex_fonts)
 plt.rcParams.update({"legend.handlelength": 1})
+plt.rcParams.update({
+    "legend.frameon": True,
+    "legend.edgecolor": "black",
+    "legend.fancybox": False,
+    })
 
 def savefig(filename):
     plt.savefig(
@@ -32,7 +37,6 @@ def line_plot(
         Y, X, xlabel=None, ylabel=None, ymax=None, ymin=None,
         xmax=None, xmin=None, filename=None, legend=None, errors=None,
         xlog=False, ylog=False, size=None, marker="s"):
-    colors = sns.cubehelix_palette(Y.shape[0], start=2, rot=0, dark=0, light=.5)
     plt.clf()
     if legend is None:
         legend = [None] * Y.shape[0]
@@ -42,12 +46,11 @@ def line_plot(
 
     for n in range(Y.shape[0]):
         x = X[n, :] if X.ndim == 2 else X
-        plt.plot(x, Y[n, :], label=legend[n], color=colors[n],
+        plt.plot(x, Y[n, :], label=legend[n],
                 marker=marker, markersize=5)
         if errors is not None:
             plt.fill_between(
-                x, Y[n, :] - errors[n, :], Y[n, :] + errors[n, :],
-                alpha=0.1, color=colors[n])
+                x, Y[n, :] - errors[n, :], Y[n, :] + errors[n, :], alpha=0.1)
 
     if ymax is not None:
         plt.ylim(top=ymax)

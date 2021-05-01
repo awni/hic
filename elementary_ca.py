@@ -5,13 +5,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import random
+import seaborn as sns
 
 import plotting
 
-# Wolfram's ECA classes
-#  S. Wolfram (1983) Statistical Mechanics of Cellular Automata, Review
-#  Modern Physics 55 601–644.
-# These are from https://arxiv.org/pdf/1306.5577.pdf
+"""
+ Experiments computing the hierarchical information content (HIC) of elementary
+ cellular automata (ECA).
+
+ We distinguish the ECA with the Wolfram class system (1 is constant, 2 is
+ periodic, 3 is random, 4 is complex). The exact classes sets are from table 2
+ of [2].
+
+ [1] "Statistical Mechanics of Cellular Automata", S. Wolfram (1983),
+     Review Modern Physics 55 601–644.
+ [2] "A Note on Elementary Cellular Automata Classification",
+     Genaro J. Martinez, 2013,  June 17, 2013,
+     https://arxiv.org/abs/1306.5577
+"""
 
 CLASS1 = [0, 8, 32, 40, 128, 136, 160, 168]
 CLASS2 = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 19, 23,
@@ -100,28 +111,43 @@ def hic(states, sizes):
     return sum((p - q)**2 for p,q in zip(mis[0:-1], mis[1:]))
 
 
-def compute_stats_by_class():
-    # For each class sample a rule and an initial state.
-    # Run the rule for (burn + state_size) updates to get the final set of states.
-    # Use the final set of states to compute the HIC
+def compute_hic_by_class():
+    """
+    Plot the distribution of HIC over by class over random trials of rule and
+    initial state.
+    """
+    classes = [CLASS1, CLASS2, CLASS3, CLASS4]
     state_size = 200
-    burn = 200
     hic_sizes = [(1, 1), (1, 2), (1, 3)]
-    trials_per_class = 2
-    class_results = {}
+    trials_per_class = 10
+    results = collections.defaultdict(list)
     for c in range(4):
         for t in range(trials_per_class):
-            init_state = tuple(random.randint(0, 1) for _ in range(state_size))
-            for _ in range(state_size + burn):
+            # sample a rule:
+            rn = random.choice(classes[c])
+            rule = rule_to_dict(rn)
+            # sample an initial state:
+            states = [tuple(random.randint(0, 1) for _ in range(state_size))]
+            for _ in range(2 * state_size):
                 states.append(update(states[-1], rule))
-            states = np.array(states)[burn:, :]
-            results[rule_num] = (hic(states, hic_sizes), states)
+            states = np.array(states)[state_size:, :]
+            h = hic(states, hic_sizes)
+            print(c, rn, h)
+            results[c].append(h)
 
+    f, ax = plt.subplots(figsize=(10, 4))
+    results = np.array([results[c] for c in range(4)]).T
+    sns.stripplot(data=results, alpha=.25, zorder=1, orient="h", color="black")
+    sns.pointplot(
+        data=results, join=False, markers="d", ci="sd",
+        errwidth=0.5, capsize=0.1, orient="h", color="black")
+    ax.get_yaxis().set_ticklabels(["Class {}".format(c) for c in range(1, 5)])
+    ax.set_xlabel("HIC")
+    plotting.savefig(os.path.join("paper/figures", "hic_by_class"))
 
 def hic_vs_num_levels(state_size=200):
+    """ HIC vs number of levels for one rule from each class. """
     num_levels = 7
-    # burn is chosen to propagate information accross the full automata:
-    burn = state_size
     rules = [128, 2, 30, 110]
 
     init_state = [0]*state_size
@@ -131,9 +157,9 @@ def hic_vs_num_levels(state_size=200):
     for rule_num in rules:
         rule = rule_to_dict(rule_num)
         states = [init_state]
-        for _ in range(state_size + burn):
+        for _ in range(2 * state_size):
             states.append(update(states[-1], rule))
-        states = np.array(states)[burn:, :]
+        states = np.array(states)[state_size:, :]
         results[rule_num] = states
 
     hic_sizes = [(1, l) for l in range(1, num_levels + 2)]
@@ -151,8 +177,8 @@ def hic_vs_num_levels(state_size=200):
 
 
 def visualize_sample_classes():
+    """ HIC with images for one rule from each class. """
     state_size = 200
-    burn = state_size
     hic_sizes = [(1, 1), (1, 2), (1, 3)]
     init_state = [0]*state_size
     init_state[state_size // 2] = 1
@@ -161,9 +187,9 @@ def visualize_sample_classes():
     for rule_num in [128, 2, 30, 110]:
         rule = rule_to_dict(rule_num)
         states = [init_state]
-        for _ in range(state_size + burn):
+        for _ in range(2 * state_size):
             states.append(update(states[-1], rule))
-        states = np.array(states)[burn:, :]
+        states = np.array(states)[state_size:, :]
         results[rule_num] = (hic(states, hic_sizes), states)
 
     # Visualize the states and show the corresponding HIC
@@ -186,7 +212,7 @@ if __name__ == "__main__":
     Some experiments on using HIC to distinguish ECAs by the Wolfram
     classification.
     """
-    visualize_sample_classes()
-    hic_vs_num_levels(200)
-    hic_vs_num_levels(500)
-    #compute_all_rules()
+    #visualize_sample_classes()
+    #hic_vs_num_levels(200)
+    #hic_vs_num_levels(500)
+    compute_hic_by_class()
