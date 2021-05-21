@@ -116,15 +116,13 @@ def compute_hic_by_class():
     Plot the distribution of HIC over by class over random trials of rule and
     initial state.
     """
-    classes = [CLASS1, CLASS2, CLASS3, CLASS4]
-    state_size = 200
-    hic_sizes = [(1, 1), (1, 2), (1, 3)]
-    trials_per_class = 10
+    rules = [128, 2, 30, 110]
+    state_size = 500
+    hic_sizes = [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6)]
+    trials_per_rule = 20
     results = collections.defaultdict(list)
-    for c in range(4):
-        for t in range(trials_per_class):
-            # sample a rule:
-            rn = random.choice(classes[c])
+    for rn in rules:
+        for t in range(trials_per_rule):
             rule = rule_to_dict(rn)
             # sample an initial state:
             states = [tuple(random.randint(0, 1) for _ in range(state_size))]
@@ -132,18 +130,17 @@ def compute_hic_by_class():
                 states.append(update(states[-1], rule))
             states = np.array(states)[state_size:, :]
             h = hic(states, hic_sizes)
-            print(c, rn, h)
-            results[c].append(h)
+            results[rn].append(h)
 
     f, ax = plt.subplots(figsize=(10, 4))
-    results = np.array([results[c] for c in range(4)]).T
+    results = np.array([results[r] for r in rules]).T
     sns.stripplot(data=results, alpha=.25, zorder=1, orient="h", color="black")
     sns.pointplot(
         data=results, join=False, markers="d", ci="sd",
         errwidth=0.5, capsize=0.1, orient="h", color="black")
-    ax.get_yaxis().set_ticklabels(["Class {}".format(c) for c in range(1, 5)])
+    ax.get_yaxis().set_ticklabels(["Rule {}".format(r) for r in rules])
     ax.set_xlabel("HIC")
-    plotting.savefig(os.path.join("paper/figures", "hic_by_class"))
+    plotting.savefig(os.path.join("paper/figures", "hic_by_rule"))
 
 def hic_vs_num_levels(state_size=200):
     """ HIC vs number of levels for one rule from each class. """
@@ -172,6 +169,8 @@ def hic_vs_num_levels(state_size=200):
     plotting.line_plot(
         hics, np.array(list(range(1, num_levels + 1))),
         xlabel="Number of levels", ylabel="HIC",
+        marker=["x", "^", "o", "d"],
+        linestyle=["-.", "dotted", "--", "-"],
         legend=["Rule {}".format(r) for r in rules],
         filename=os.path.join("paper/figures/", f"hic_vs_num_levels_size_{state_size}"))
 

@@ -21,7 +21,7 @@ tex_fonts = {
 }
 
 plt.rcParams.update(tex_fonts)
-plt.rcParams.update({"legend.handlelength": 1})
+plt.rcParams.update({"legend.handlelength": 1.5})
 plt.rcParams.update({
     "legend.frameon": True,
     "legend.edgecolor": "black",
@@ -36,7 +36,7 @@ def savefig(filename):
 def line_plot(
         Y, X, xlabel=None, ylabel=None, ymax=None, ymin=None,
         xmax=None, xmin=None, filename=None, legend=None, errors=None,
-        xlog=False, ylog=False, size=None, marker="s"):
+        xlog=False, ylog=False, size=None, marker="s", color="k", linestyle=None):
     plt.clf()
     if legend is None:
         legend = [None] * Y.shape[0]
@@ -44,13 +44,23 @@ def line_plot(
     if size is not None:
         plt.figure(figsize=size)
 
+    if isinstance(color, str):
+        color = [color] * Y.shape[0]
+    if isinstance(marker, str):
+        marker = [marker] * Y.shape[0]
+    if linestyle is None:
+        linestyle = ["-"] * Y.shape[0]
+
     for n in range(Y.shape[0]):
         x = X[n, :] if X.ndim == 2 else X
         plt.plot(x, Y[n, :], label=legend[n],
-                marker=marker, markersize=5)
+                marker=marker[n], markersize=6,
+                linestyle=linestyle[n],
+                color=color[n])
         if errors is not None:
             plt.fill_between(
-                x, Y[n, :] - errors[n, :], Y[n, :] + errors[n, :], alpha=0.1)
+                x, Y[n, :] - errors[n, :], Y[n, :] + errors[n, :],
+                alpha=0.1, color=color[n])
 
     if ymax is not None:
         plt.ylim(top=ymax)
@@ -64,7 +74,7 @@ def line_plot(
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     if legend[0] is not None:
-        plt.legend()
+        plt.legend(loc="upper left")
 
     axes = plt.gca()
     if xlog:

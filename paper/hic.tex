@@ -14,13 +14,13 @@ denote by $X^{\ell}$ the state variable at the $\ell$-th level of the
 hierarchy. The neighborhood of $X^\ell$ is the set $\calN(X^\ell)$ which
 contains the elements used to construct the system at the next level. Following
 \citet{simon1991architecture}, we define the span of a level $d^\ell =
-\left|\calN(X^\ell)\right|$ as the number of elements in the neighborhood. For
+\left|\calS(X^\ell)\right|$ as the number of elements used to construct the variable $X^\ell$. For
 now we assume the span to be constant with a value of two $d^\ell = 2$ for
 every level. We later generalize to larger spans.
 
 The complexity at the composition of level $\ell$ from level $\ell -1$ is
 computed from the squared difference of the mutual information of the
-neighborhood at each level:
+span at each level:
 \begin{equation}
   C_\ell = \left[ I(X^{\ell+1}; Y^{\ell+1}) - I(X^\ell; Y^\ell) \right]^2
 \end{equation}
@@ -42,6 +42,11 @@ We use the level complexities $C_\ell$ to construct the overall system complexit
     \hic(S) = \sum_{l=1}^{L-1} C_\ell = \sum_{l=1}^{L-1} \left[ I(X^{\ell+1}; Y^{\ell+1}) - I(X^\ell; Y^\ell) \right]^2.
   \end{equation}
 \end{definition}
+
+\paragraph{Larger spans} Using a larger span requires generalizing the mutual
+information to multiple variables. The interaction information is one such
+generalization~\citep{mcgill1954multivariate}. The interaction information of a
+set of variables is defined recursively as:
 
 \subsection{Examples}
 
