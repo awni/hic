@@ -116,21 +116,30 @@ def compute_hic_by_class():
     Plot the distribution of HIC over by class over random trials of rule and
     initial state.
     """
-    rules = [128, 2, 30, 110]
+    #rules = [128, 2, 30, 110]
     state_size = 500
     hic_sizes = [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6)]
     trials_per_rule = 20
     results = collections.defaultdict(list)
-    for rn in rules:
-        for t in range(trials_per_rule):
-            rule = rule_to_dict(rn)
-            # sample an initial state:
-            states = [tuple(random.randint(0, 1) for _ in range(state_size))]
-            for _ in range(2 * state_size):
-                states.append(update(states[-1], rule))
-            states = np.array(states)[state_size:, :]
-            h = hic(states, hic_sizes)
-            results[rn].append(h)
+    ECA_CLASSES = [CLASS1, CLASS2, CLASS3, CLASS4]
+    for _ in range(20):
+        # Randomly sample a class
+        cls_idx = random.choice([0,1,2,3])#[CLASS1, CLASS2, CLASS3, CLASS4])
+        eca_cls = ECA_CLASSES[cls_idx]
+
+        # Randomly sample a rule from the class
+        rn = random.choice(eca_cls)
+#@        for t in range(trials_per_rule):
+        rule = rule_to_dict(rn)
+        # sample an initial state:
+        states = [tuple(random.randint(0, 1) for _ in range(state_size))]
+        for _ in range(2 * state_size):
+            states.append(update(states[-1], rule))
+        states = np.array(states)[state_size:, :]
+        h = hic(states, hic_sizes)
+        print(f"Class {cls_idx + 1}, Rule # {rn}, HIC {h:.3f}")
+        #results[rn].append(h)
+    return
 
     f, ax = plt.subplots(figsize=(10, 4))
     results = np.array([results[r] for r in rules]).T
