@@ -1,7 +1,9 @@
 import collections
 import itertools
+import json
 import math
 import matplotlib.pyplot as plt
+import multiprocessing as mp
 import numpy as np
 import os
 import random
@@ -111,45 +113,63 @@ def hic(states, sizes):
     return sum((p - q)**2 for p,q in zip(mis[0:-1], mis[1:]))
 
 
-def compute_hic_by_class():
-    """
-    Plot the distribution of HIC over by class over random trials of rule and
-    initial state.
-    """
-    #rules = [128, 2, 30, 110]
+def class_results(c):
     state_size = 500
     hic_sizes = [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6)]
-    trials_per_rule = 20
+    trials_per_class = 100
     results = collections.defaultdict(list)
-    ECA_CLASSES = [CLASS1, CLASS2, CLASS3, CLASS4]
-    for _ in range(20):
-        # Randomly sample a class
-        cls_idx = random.choice([0,1,2,3])#[CLASS1, CLASS2, CLASS3, CLASS4])
-        eca_cls = ECA_CLASSES[cls_idx]
-
-        # Randomly sample a rule from the class
-        rn = random.choice(eca_cls)
-#@        for t in range(trials_per_rule):
+    class_rules = [CLASS1, CLASS2, CLASS3, CLASS4][c]
+    for _ in range(trials_per_class):
+        # Randomly sample a rule from the class:
+        rn = random.choice(class_rules)
         rule = rule_to_dict(rn)
-        # sample an initial state:
+        # Sample an initial state:
         states = [tuple(random.randint(0, 1) for _ in range(state_size))]
         for _ in range(2 * state_size):
             states.append(update(states[-1], rule))
         states = np.array(states)[state_size:, :]
         h = hic(states, hic_sizes)
-        print(f"Class {cls_idx + 1}, Rule # {rn}, HIC {h:.3f}")
-        #results[rn].append(h)
-    return
+        results[rn].append(h)
+    return results
 
+
+def compute_hic_by_class(save_load_dir):
+    """
+    Plot the distribution of HIC over by class over random trials of rule and
+    initial state.
+
+    If `save_load_dir` is specified and exists will attempt to load data from it.
+    Otherwise will make a new file in the directory with the results.
+    """
+    num_class = 4
+    save_load_file = None
+    if save_load_dir is not None:
+        save_load_file = os.path.join(save_load_dir, "hic_by_class.json")
+    if save_load_file is not None and os.path.exists(save_load_file):
+        with open(save_load_file, 'r') as fid:
+            results = json.load(fid)
+    else:
+        with mp.Pool(num_class) as pool:
+            results = pool.map(class_results, range(num_class))
+    if save_load_file is not None:
+        with open(save_load_file, 'w') as fid:
+            json.dump(results, fid)
+    all_class = []
+    for c in range(num_class):
+        all_class.append(
+            [v for val in results[c].values() for v in val])
+    results = np.array(all_class).T
+
+    # Plots the median and a 95% confidence interval
     f, ax = plt.subplots(figsize=(10, 4))
-    results = np.array([results[r] for r in rules]).T
-    sns.stripplot(data=results, alpha=.25, zorder=1, orient="h", color="black")
     sns.pointplot(
-        data=results, join=False, markers="d", ci="sd",
-        errwidth=0.5, capsize=0.1, orient="h", color="black")
-    ax.get_yaxis().set_ticklabels(["Rule {}".format(r) for r in rules])
-    ax.set_xlabel("HIC")
-    plotting.savefig(os.path.join("paper/figures", "hic_by_rule"))
+        data=results, join=False, markers="d",orient="h", color="black",
+        errwidth=1.0, capsize=0.2, estimator=np.median)
+    ax.get_yaxis().set_ticklabels(
+        ["Class {}".format(c + 1) for c in range(num_class)])
+    ax.set_xlabel("HIC");
+    plotting.savefig(os.path.join("paper/figures", "hic_by_class"))
+
 
 def hic_vs_num_levels(state_size=200):
     """ HIC vs number of levels for one rule from each class. """
@@ -220,7 +240,13 @@ if __name__ == "__main__":
     Some experiments on using HIC to distinguish ECAs by the Wolfram
     classification.
     """
-    #visualize_sample_classes()
-    #hic_vs_num_levels(200)
-    #hic_vs_num_levels(500)
-    compute_hic_by_class()
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Train a genetic neural network.")
+    parser.add_argument('--save_load_dir', type=str, default=None,
+        help='Path to save (or load) data from')
+    args = parser.parse_args()
+    visualize_sample_classes()
+    hic_vs_num_levels(200)
+    hic_vs_num_levels(500)
+    compute_hic_by_class(args.save_load_dir)

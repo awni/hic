@@ -2,13 +2,13 @@
 \label{sec:hic}
 
 We construct a measure for the structural complexity of a system. As motivated
-in section~\ref{}, the complexity should grow through the compositions of
+in section~\ref{sec:finding_complexity}, the complexity should grow through the compositions of
 ordered and disordered subsystems in a hierarchical structure. At each such
-composition (whether it by order to disorder or disorder to order), the
-complexity grows. Hence we decompose the overall complexity as the sum of the
-complexity at each such composition.
+composition (whether it from order to disorder or disorder to order), the
+complexity grows. Hence, we decompose the overall complexity as the sum of the
+complexity at each composition.
 
-The complexity at each composition is given by the difference in mutual
+We compute complexity at each composition as the difference in mutual
 information between the higher-level system and that of the subsystem. We
 denote by $X^{\ell}$ the state variable at the $\ell$-th level of the
 hierarchy. The neighborhood of $X^\ell$ is the set $\calN(X^\ell)$ which
@@ -55,8 +55,8 @@ examples.
 
 \begin{example}
   \label{ex:constant}
-  As a first example, consider a state $S = [0, 0, \ldots, 0]$,
-  constant sequence of all $0$s. At any level for any neighborhood, the mutual
+  As a first example, consider the state $S = [0, 0, \ldots, 0]$,
+  a constant sequence of all $0$s. At any level for any neighborhood, the mutual
   information $I(X^\ell; Y^\ell) = 0$. Hence the terms $C_\ell = 0$ for all
   $\ell$ and the overall $\hic(S) = 0$.
 \end{example}
@@ -65,8 +65,8 @@ examples.
   \label{ex:uniform}
   Let $S = [x_1, x_2, \ldots]$ consist of a sequence of independent draws from a
   multinomial uniform distribution over $K$ categories. Assuming a span of $2$,
-  the variable $X^\ell$ consists of $2^\ell$ of the $x_i$ prmitives and hence
-  can take on any of $K^(2^\ell)$ values. Consider the mutual information level
+  the variable $X^\ell$ consists of $2^\ell$ of the $x_i$ primitives and hence
+    can take on any of $K^{(2^\ell)}$ values. Consider the mutual information of level
   $\ell$:
   \begin{equation}
     I(X^\ell; Y^\ell) = H(X^\ell) - H(X^\ell \mid Y^{\ell}) = 2^\ell \log K - 2^\ell \log K = 0
@@ -86,12 +86,12 @@ resulting HIC is.
   Let $S = [0, 1, 0, 1, \ldots]$ consist of a sequence of alternating zeros and
   ones.
 
-  For the first level $X^1$ takes on the two values $\{0, 1\}$ with equal
+  The first level $X^1$ takes on the two values $\{0, 1\}$ with equal
   probability hence $H(X^1) = \log 2$. However given the neighbor $Y^1$ the
   value of $X^1$ is deterministic and hence $H(X^1 \mid Y^1) = 0$. Thus the
   overall mutual information is $I(X^1; Y^1) = \log 2$.
 
-  For the second level $X^2$ takes on two values $\{[0, 1], [1, 0]\}$ with
+  The second level $X^2$ takes on two values $\{[0, 1], [1, 0]\}$ with
   equal probability, and we have $H(X^2) = \log 2$. Again $X^2$ is fully
   determined by $Y^2$ thus $H(X^2 \mid Y^2) = 0$ and $I(X^2, Y^2) = \log 2$.
   Combining these to produce $C^2$ yields:
@@ -102,8 +102,8 @@ resulting HIC is.
 \end{example}
 
 In example \ref{ex:repeats} we used overlaping windows to construct $X^2$. If
-had chosen disjoint windows the HIC would be small but nonzero. Depending on
+we had chosen disjoint windows the HIC would be small but nonzero. Depending on
 the problem this may be desirable in that the alternating seuqence should be
 considered slightly more complex than a constant sequence. This is where
-subjectivitity comes in. The designer should determine among these choices
+subjectivitity comes in. The designer should select from these choices
 based on the setting at hand.
