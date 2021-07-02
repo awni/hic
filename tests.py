@@ -18,6 +18,19 @@ class TestModels(unittest.TestCase):
         for state, v in rule_30.items():
             self.assertEqual(eca.update(state)[1], v)
 
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 0, 0)
+        self.assertEqual(neighbors, (1,))
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 0, 3)
+        self.assertEqual(neighbors, (4,))
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 1, 0)
+        self.assertEqual(neighbors, (4, 1, 2))
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 1, 3)
+        self.assertEqual(neighbors, (3, 4, 1))
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 2, 0)
+        self.assertEqual(neighbors, (3, 4, 1, 2, 3))
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 2, 3)
+        self.assertEqual(neighbors, (2, 3, 4, 1, 2))
+
 
     def test_cca(self):
         k = 2
@@ -68,6 +81,27 @@ class TestMeasures(unittest.TestCase):
         expected = math.sqrt((5 / 16 - 6 / 20)**2 + (7 / 16) **2 + (9 / 20) ** 2)
         self.assertEqual(measures.l2(p, q), expected)
         self.assertEqual(measures.l2(q, p), expected)
+
+    def test_light_cones(self):
+        def neighbors_fn(state, loc, radius):
+            return tuple(state[loc - radius:loc + radius + 1])
+
+        states = [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6], [3, 4, 5, 6, 7]]
+
+        past_cone = measures.get_past_cone(states[0:1], 2, neighbors_fn)
+        self.assertEqual(past_cone, ((3,),))
+
+        past_cone = measures.get_past_cone(states[0:2], 2, neighbors_fn)
+        self.assertEqual(past_cone, ((2, 3, 4), (4,)))
+
+        past_cone = measures.get_past_cone(states, 2, neighbors_fn)
+        self.assertEqual(past_cone, ((1, 2, 3, 4, 5), (3, 4, 5), (5,)))
+
+        future_cone = measures.get_future_cone(states[0:1], 2, neighbors_fn)
+        self.assertEqual(future_cone, ((2, 3, 4),))
+
+        future_cone = measures.get_future_cone(states[0:2], 2, neighbors_fn)
+        self.assertEqual(future_cone, ((2, 3, 4), (2, 3, 4, 5, 6)))
 
 
 if __name__ == '__main__':

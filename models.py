@@ -38,6 +38,19 @@ class ECA:
         return {x : int(y)
             for x, y in itertools.zip_longest(states, bin_rule, fillvalue=0)}
 
+    def get_neighborhood(state, radius, loc):
+        """
+        Get the neighborhood of the given `radius` centered at `loc` assuming
+        the state wraps around circularly.
+        """
+        neighbors = state[max(loc - radius, 0):loc + radius + 1]
+        if loc - radius < 0:
+            neighbors = state[loc - radius:] + neighbors
+        if loc + radius >= len(state):
+            ridx = loc + radius - len(state) + 1
+            neighbors.extend(state[:ridx])
+        return tuple(neighbors)
+
     def update(self, state):
         """
         Updates a state description of a 1D ECA state using the dictionary
@@ -59,6 +72,14 @@ class CCA:
     def __init__(self, k, T):
         self.k = k
         self.T = T
+
+
+    def get_neighborhood(state, location, radius):
+        i, j = location
+        return tuple(state[(i+p) % n, (j+q) % n]
+                    for p in range(-radius, radius+1)
+                        for q in range(-radius, radius+1))
+
 
     def update(self, state):
         """
