@@ -53,7 +53,7 @@ def mutual_information(cond_counts):
     if isinstance(cond_counts[0], collections.Counter):
         cond_counts = [
             [c for _, c in counter.most_common()] for counter in cond_counts]
-    counts = [sum(c) for c in cond_counts]
+    counts = [sum(c) for c in zip(*cond_counts)]
     return entropy(counts) - conditional_entropy(cond_counts)
 
 
