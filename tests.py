@@ -70,10 +70,18 @@ class TestMeasures(unittest.TestCase):
             [[0, 0, 2], [0, 0, 3], [0, 1, 0], [7, 0, 0]])
         self.assertTrue(math.isclose(condH, 0.0, abs_tol=1e-15))
 
-    def mutual_information(self):
+    def test_mutual_information(self):
         I = measures.mutual_information(
-            [[0, 0, 2], [0, 0, 3], [0, 1, 0], [7, 0, 0]])
+            [[0, 0, 2], [0, 0, 4], [0, 0, 3], [0, 0, 9]])
         self.assertTrue(math.isclose(I, 0.0, abs_tol=1e-15))
+
+        I = measures.mutual_information(
+            [[2, 2, 2], [4, 4, 4], [3, 3, 3]])
+        self.assertTrue(math.isclose(I, 0.0, abs_tol=1e-15))
+
+        I = measures.mutual_information(
+            [[6, 0, 0], [0, 6, 0], [0, 0, 6]])
+        self.assertTrue(math.isclose(I, -math.log(1/3.)))
 
     def test_l2(self):
         p = {1 : 4, 2 : 5, 3 : 7}
