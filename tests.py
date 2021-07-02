@@ -3,7 +3,7 @@ import math
 import numpy as np
 import unittest
 
-import measures 
+import measures
 import models
 
 
@@ -20,15 +20,15 @@ class TestModels(unittest.TestCase):
 
         neighbors = models.ECA.get_neighborhood([1,2,3,4], 0, 0)
         self.assertEqual(neighbors, (1,))
-        neighbors = models.ECA.get_neighborhood([1,2,3,4], 0, 3)
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 3, 0)
         self.assertEqual(neighbors, (4,))
-        neighbors = models.ECA.get_neighborhood([1,2,3,4], 1, 0)
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 0, 1)
         self.assertEqual(neighbors, (4, 1, 2))
-        neighbors = models.ECA.get_neighborhood([1,2,3,4], 1, 3)
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 3, 1)
         self.assertEqual(neighbors, (3, 4, 1))
-        neighbors = models.ECA.get_neighborhood([1,2,3,4], 2, 0)
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 0, 2)
         self.assertEqual(neighbors, (3, 4, 1, 2, 3))
-        neighbors = models.ECA.get_neighborhood([1,2,3,4], 2, 3)
+        neighbors = models.ECA.get_neighborhood([1,2,3,4], 3, 2)
         self.assertEqual(neighbors, (2, 3, 4, 1, 2))
 
 
@@ -81,6 +81,20 @@ class TestMeasures(unittest.TestCase):
         expected = math.sqrt((5 / 16 - 6 / 20)**2 + (7 / 16) **2 + (9 / 20) ** 2)
         self.assertEqual(measures.l2(p, q), expected)
         self.assertEqual(measures.l2(q, p), expected)
+
+    def test_kl(self):
+        p = {"a": 2, "b": 2, "c": 2}
+        q = {"a": 2, "b": 2, "c": 2}
+
+        dkl = measures.kl(p, q)
+        self.assertTrue(math.isclose(dkl, 0.0, abs_tol=1e-15))
+
+        q = {"e": 0, "b": 2, "c": 2}
+        self.assertTrue(measures.kl(p, q), float("inf"))
+
+        q = {"a": 3, "b": 3, "c": 3}
+        dkl = measures.kl(p, q)
+        self.assertTrue(math.isclose(dkl, 0.0, abs_tol=1e-15))
 
     def test_light_cones(self):
         def neighbors_fn(state, loc, radius):

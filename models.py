@@ -38,7 +38,7 @@ class ECA:
         return {x : int(y)
             for x, y in itertools.zip_longest(states, bin_rule, fillvalue=0)}
 
-    def get_neighborhood(state, radius, loc):
+    def get_neighborhood(state, loc, radius):
         """
         Get the neighborhood of the given `radius` centered at `loc` assuming
         the state wraps around circularly.
@@ -48,7 +48,7 @@ class ECA:
             neighbors = state[loc - radius:] + neighbors
         if loc + radius >= len(state):
             ridx = loc + radius - len(state) + 1
-            neighbors.extend(state[:ridx])
+            neighbors = neighbors + state[:ridx]
         return tuple(neighbors)
 
     def update(self, state):
