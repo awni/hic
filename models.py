@@ -43,6 +43,8 @@ class ECA:
         Get the neighborhood of the given `radius` centered at `loc` assuming
         the state wraps around circularly.
         """
+        if not (isinstance(state, list) or isinstance(state, tuple)):
+            raise ValueError("State must be a list")
         neighbors = state[max(loc - radius, 0):loc + radius + 1]
         if loc - radius < 0:
             neighbors = state[loc - radius:] + neighbors

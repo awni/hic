@@ -169,6 +169,43 @@ def visualize_sample_classes(figure_path):
     plt.close(f)
 
 
+def eca_sc(states, past_time=2, future_time=2):
+    # Make the table of counts of future light cones given past light cones:
+    future_given_past = collections.defaultdict(collections.Counter)
+    T = len(states)
+    D = len(states[0])
+    neighbors_fn = models.ECA.get_neighborhood
+    for t in range(past_time, T - future_time):
+        past_states = states[t - past_time:t]
+        future_states = states[t:t + future_time]
+        for j in range(D):
+            # Get the past and future light cones at (t, j):
+            past_cone = measures.get_past_cone(past_states, j, neighbors_fn)
+            future_cone = measures.get_future_cone(future_states, j, neighbors_fn)
+            # Update conditional probability table:
+            future_given_past[past_cone][future_cone] += 1
+    return measures.statistical_complexity(future_given_past)
+
+
+def stat_comp(figure_path):
+    """ Statistical complexity for one rule from each class. """
+    state_size = 200
+    init_state = [0]*state_size
+    init_state[state_size // 2] = 1
+    init_state = tuple(init_state)
+    for ft, pt in [(1, 1), (2, 2), (3, 3)]:
+        print("FT, PT", ft, pt)
+        results = {}
+        for rule_num in [128, 2, 30, 110]:
+                eca = models.ECA(rule_num)
+                states = [init_state]
+                for _ in range(2 * state_size):
+                    states.append(eca.update(states[-1]))
+                states = states[state_size:]
+                results[rule_num] = eca_sc(states, past_time=pt, future_time=ft)
+        print(results)
+
+
 if __name__ == "__main__":
     """
     Some experiments on using HIC to distinguish ECAs by the Wolfram
@@ -182,7 +219,8 @@ if __name__ == "__main__":
     parser.add_argument('--figure_path', type=str, default=".",
         help='Path to save figures to')
     args = parser.parse_args()
-    visualize_sample_classes(args.figure_path)
-    hic_vs_num_levels(200, args.figure_path)
-    hic_vs_num_levels(500, args.figure_path)
-    compute_hic_by_class(args.save_load_dir, args.figure_path)
+#    visualize_sample_classes(args.figure_path)
+#    hic_vs_num_levels(200, args.figure_path)
+#    hic_vs_num_levels(500, args.figure_path)
+    stat_comp(args.figure_path)
+#    compute_hic_by_class(args.save_load_dir, args.figure_path)
