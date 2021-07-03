@@ -49,7 +49,9 @@ def _class_results(c):
     hic_sizes = [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6)]
     trials_per_class = 100
     results = collections.defaultdict(list)
-    class_rules = [CLASS1, CLASS2, CLASS3, CLASS4][c]
+    class_rules = [
+        models.ECA.CLASS1, models.ECA.CLASS2,
+        models.ECA.CLASS3, models.ECA.CLASS4][c]
     for _ in range(trials_per_class):
         # Randomly sample a rule from the class:
         rule_num = random.choice(class_rules)
@@ -57,10 +59,10 @@ def _class_results(c):
         # Sample an initial state:
         states = [tuple(random.randint(0, 1) for _ in range(state_size))]
         for _ in range(2 * state_size):
-            states.append(eca.udpate(states[-1]))
+            states.append(eca.update(states[-1]))
         states = np.array(states)[state_size:, :]
         h = eca_hic(states, hic_sizes)
-        results[rn].append(h)
+        results[rule_num].append(h)
     return results
 
 
@@ -82,6 +84,7 @@ def compute_hic_by_class(save_load_dir, figure_path):
     else:
         with mp.Pool(num_class) as pool:
             results = pool.map(_class_results, range(num_class))
+
     if save_load_file is not None:
         with open(save_load_file, 'w') as fid:
             json.dump(results, fid)
@@ -93,6 +96,14 @@ def compute_hic_by_class(save_load_dir, figure_path):
 
     # Plots the median and a 95% confidence interval
     f, ax = plt.subplots(figsize=(10, 4))
+    res_split = np.split(results, 4, axis=1)
+    def cull(res):
+        std = res.std()
+        median = np.median(res)
+        keep_ids = np.abs(res - median) <= std
+        return res[keep_ids]
+    res_split = [cull(res)[:20] for res in res_split]
+    sns.stripplot(data=res_split, alpha=.20, zorder=1, orient="h", color="black")
     sns.pointplot(
         data=results, join=False, markers="d",orient="h", color="black",
         errwidth=1.0, capsize=0.2, estimator=np.median)
@@ -129,7 +140,7 @@ def hic_vs_num_levels(state_size, figure_path=None):
     hics = np.array(hics)
     plotting.line_plot(
         hics, np.array(list(range(1, num_levels + 1))),
-        xlabel="Number of levels", ylabel="HIC",
+        xlabel="Number of levels, $L$", ylabel="HIC",
         marker=["x", "^", "o", "d"],
         linestyle=["-.", "dotted", "--", "-"],
         legend=["Rule {}".format(r) for r in rules],
@@ -222,5 +233,5 @@ if __name__ == "__main__":
 #    visualize_sample_classes(args.figure_path)
 #    hic_vs_num_levels(200, args.figure_path)
 #    hic_vs_num_levels(500, args.figure_path)
-    stat_comp(args.figure_path)
-#    compute_hic_by_class(args.save_load_dir, args.figure_path)
+    compute_hic_by_class(args.save_load_dir, args.figure_path)
+#    stat_comp(args.figure_path)
