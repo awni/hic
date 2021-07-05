@@ -1,6 +1,7 @@
 import itertools
 import numpy as np
 
+
 class ECA:
     """
     Elementary Cellular Automata

@@ -2,37 +2,47 @@
 \label{sec:hic}
 
 We construct a measure for the structural complexity of a system. As motivated
-in section~\ref{sec:finding_complexity}, the complexity should grow through the compositions of
-ordered and disordered subsystems in a hierarchical structure. At each such
-composition (whether it from order to disorder or disorder to order), the
-complexity grows. Hence, we decompose the overall complexity as the sum of the
-complexity at each composition.
+in section~\ref{sec:finding_complexity}, we want the the complexity to grow at
+the compositions of ordered and disordered subsystems in a hierarchical
+structure. We decompose the overall complexity as the sum of the complexity at
+each composition.
 
-We compute complexity at each composition as the difference in mutual
-information between the higher-level system and that of the subsystem. We
-denote by $X^{\ell}$ the state variable at the $\ell$-th level of the
-hierarchy. The neighborhood of $X^\ell$ is the set $\calN(X^\ell)$ which
-contains the elements used to construct the system at the next level. Following
-\citet{simon1991architecture}, we define the span of a level $d^\ell =
-\left|\mathcal{S}(X^\ell)\right|$ as the number of elements used to construct the variable $X^\ell$. For
-now we assume the span to be constant with a value of two $d^\ell = 2$ for
+Assume we are given a hierarchical system with $L$ levels. We construct the
+global system complexity from the local complexity computed at each of the
+$L-1$ compositions between consecutive levels. The local complexity measures
+are given by the difference in mutual information of the system at level
+$\ell$ and that of the subsytem at level $\ell - 1$. We denote by $X^{\ell}$ the
+state variable at the $\ell$-th level of the hierarchy. Following
+\citet{simon1991architecture}, we define the span of a level as the
+number of elements from the $\ell - 1$ subsystem used to construct the state
+$X^\ell$. For now we assume the span to be constant with a value of two for
 every level. We later generalize to larger spans.
 
-The complexity at the composition of level $\ell$ from level $\ell -1$ is
-computed from the squared difference of the mutual information of the
-span at each level:
+As an example, the state variable $X^\ell$ could be a molecule in an artificial
+chemistry constructed from two atoms. Alternatively, $X^{\ell}$ could be an $n
+\times n$ state of a cellular automata constructed from two $(\nicefrac{n}{2})
+\times n$ sub-states. As an example from nature, $X^{\ell}$ could be a string
+of $2^\ell$ base pairs of DNA constructed from two substrings of length $2^{\ell
+- 1}$.
+
+The complexity at the $\ell$-th composition is computed from the squared
+difference of the mutual information of the span between level $\ell$ and level
+$\ell + 1$:
 \begin{equation}
-  C_\ell = \left[ I(X^{\ell+1}; Y^{\ell+1}) - I(X^\ell; Y^\ell) \right]^2
+    C_\ell = \left[ I(X^{\ell + 1}; Y^{\ell + 1}) - I(X^{\ell}; Y^{\ell}) \right]^2
 \end{equation}
 The mutual information can be computed from the Shannon entropy and conditional
 entropy when $X^\ell$ is discrete or the differential entropy when $X^\ell$ is
 continuous~\citep{cover1999elements}:
 \begin{equation}
 \label{eq:mutual_information}
-I(X^\ell; Y^\ell) = H(X^\ell) - H(X^\ell \mid Y^\ell)
+I(X^\ell; Y^\ell) = H(X^\ell) - H(X^\ell \mid Y^\ell).
 \end{equation}
+The mutual information is large when the $\ell$-th level is highly ordered and
+small when it is highly disordered. Hence, the values $C_\ell$ will be large
+exactly at the transtion points between order and disorder (or vice-versa).  We
+use the level complexities $C_\ell$ to construct the overall system complexity.
 
-We use the level complexities $C_\ell$ to construct the overall system complexity.
 \begin{definition}[Hierarchical Information Content]
 \label{def:hic}
   The Hierarchical Information Content (HIC) of a hierarchical system $S$ with
@@ -43,10 +53,43 @@ We use the level complexities $C_\ell$ to construct the overall system complexit
   \end{equation}
 \end{definition}
 
-\paragraph{Larger spans} Using a larger span requires generalizing the mutual
-information to multiple variables. The interaction information is one such
-generalization~\citep{mcgill1954multivariate}. The interaction information of a
-set of variables is defined recursively as:
+\paragraph{Generalizing to larger spans:} Using a larger span requires
+generalizing the mutual information to multiple variables. The interaction
+information is one such generalization~\citep{mcgill1954multivariate}. The
+interaction information of a set of variables is defined recursively as:
+\begin{equation}
+    \label{eq:interaction_information}
+    I(X_1^\ell; \ldots; X_{n+1}^\ell) = I(X_1^\ell; \ldots; X_n^\ell) - I(X_1^\ell; \ldots; X_n^\ell \mid X_{n+1}^\ell),
+\end{equation}
+where the conditional mutual information is given by:
+\begin{equation}
+    \label{eq:conditional_mutual_information}
+    I(X; Y \mid Z) = \sum_{Z} P(Z) I(X; Y).
+\end{equation}
+
+\paragraph{Estimating information criteria:} Computing the mutual information
+in equation~\ref{eq:mutual_information} requires computing the entropy of the
+state variables $H(X^\ell)$ and the conditional entropy $H(X^\ell \mid
+Y^\ell)$. Estimating these quantities directly requires models for the
+distributions $P(X^\ell)$ and $P(X^\ell \mid Y^\ell)$. For state variables with
+a small domain these distributions can likely be estimated efficiently from
+counts. However, for larger state variables sample efficiency becomes an issue.
+In these cases more sophisticated density estimation techniques should be used.
+Suitable techniques can be found in most modern statistical learning or machine
+learning texts (see for example \citet{friedman2001elements}).
+
+\paragraph{Specifying the hierarchy:} In some cases, the hierarchical structure
+of the system may be self-evident. This might be the case if the system has a
+natural tree-like structure. However, in the general case, both the boundaries
+between levels and the submodules which make up the state at the next level up
+must be specified. This is introduces a degree subjectivity to the HIC which
+effects its ability to faithfully capture the complexity of the system.
+
+As an example consider measuring the HIC of a sequence of DNA. We might define
+the state $X^\ell$ to be a subsequence of $2^\ell$ nucleotides. On the other
+hand there may be some natural structure in the DNA to take advantage of. For
+example, codons are sequences of three nucleotides which each code for a
+specific amino acid.  These would make a good definition for a state variable.
 
 \subsection{Examples}
 
@@ -74,12 +117,12 @@ examples.
   Hence all of the $C^\ell = 0$ and $\hic(S) = 0$.
 \end{example}
 
-As examples~\ref{ex:constant} and \ref{ex:uniform} show, HIC behaves as
+As examples~\ref{ex:constant} and \ref{ex:uniform} show, the HIC behaves as
 expected when the system exhibits complete order or complete disorder. In both
-of these examples the HIC was zero because all of the mutual informations were
-themselves zero. In the following example, we see slightly more interesting
-behavior, where the individual mutual informations are not zero, but the
-resulting HIC is.
+of these examples the HIC was zero because the mutual information at each level
+was zero. In the following example, we see slightly more interesting behavior,
+where the individual mutual informations are not zero, but the resulting HIC
+is.
 
 \begin{example}
   \label{ex:repeats}
@@ -98,7 +141,7 @@ resulting HIC is.
   \begin{equation}
     C^2 = (I(X^2; Y^2) - I(X^1; Y^1))^2 = (\log 2 - \log 2)^2 = 0.
   \end{equation}
-  The above argument generalizes to all $\ell$ so $\hic(S) = 0$.
+  The above argument generalizes to all levels of the hierarchy so $\hic(S) = 0$.
 \end{example}
 
 In example \ref{ex:repeats} we used overlaping windows to construct $X^2$. If
