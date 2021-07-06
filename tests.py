@@ -83,6 +83,13 @@ class TestMeasures(unittest.TestCase):
             [[6, 0, 0], [0, 6, 0], [0, 0, 6]])
         self.assertTrue(math.isclose(I, -math.log(1/3.)))
 
+        cond_counts = [collections.Counter({"a" : 6}),
+                       collections.Counter({"b" : 6}),
+                       collections.Counter({"c" : 6})]
+        I = measures.mutual_information(cond_counts)
+        self.assertTrue(math.isclose(I, -math.log(1/3.)))
+
+
     def test_l2(self):
         p = {1 : 4, 2 : 5, 3 : 7}
         q = {1 : 5, 2 : 6, 4 : 9}

@@ -1,4 +1,5 @@
 import collections
+import functools
 import numpy as np
 import math
 import random
@@ -51,9 +52,14 @@ def mutual_information(cond_counts):
     if isinstance(cond_counts, dict):
         cond_counts = list(cond_counts.values())
     if isinstance(cond_counts[0], collections.Counter):
-        cond_counts = [
-            [c for _, c in counter.most_common()] for counter in cond_counts]
-    counts = [sum(c) for c in zip(*cond_counts)]
+        counts = collections.Counter()
+        for counter in cond_counts:
+            for v, c in counter.most_common():
+                counts[v] += c
+        cond_counts = [list(counter.values()) for counter in cond_counts]
+    else:
+        couns = [sum(c) for c in zip(*cond_counts)]
+
     return entropy(counts) - conditional_entropy(cond_counts)
 
 
@@ -121,14 +127,20 @@ def generate_causal_states(future_given_past, divergence, threshold):
     return causal_states
 
 
-def statistical_complexity(future_given_past):
+def statistical_complexity(future_given_past, divergence=None, threshold=1.0):
     """
     `future_given_past` should be a dictionary of counters containing the
     conditional counts for each future light cone keye'd by the given past
     light cone.
+
+    Defaults to using KL divergence to compare the conditional distributions
+    given each past light cone.
     """
     # Generate the set of causal states:
-    causal_states = generate_causal_states(future_given_past, l2, 0.1)
+    if divergence is None:
+        divergence = functools.partial(kl, eps=1e-4)
+    causal_states = generate_causal_states(
+        future_given_past, divergence, threshold)
 
     # Compute the entropy of the distribution of causal states:
     counts = [sum(t for _, t in c.most_common()) for c in causal_states]
