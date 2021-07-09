@@ -5,6 +5,7 @@ import numpy as np
 class ECA:
     """
     Elementary Cellular Automata
+
     We distinguish the ECA with the Wolfram class system (1 is constant, 2 is
     periodic, 3 is random, 4 is complex). The exact classes sets are from table 2
     of [2].

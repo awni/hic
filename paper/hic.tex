@@ -114,7 +114,7 @@ examples.
   \begin{equation}
     I(X^\ell; Y^\ell) = H(X^\ell) - H(X^\ell \mid Y^{\ell}) = 2^\ell \log K - 2^\ell \log K = 0
   \end{equation}
-  Hence all of the $C^\ell = 0$ and $\hic(S) = 0$.
+  Hence all of the $C_\ell = 0$ and $\hic(S) = 0$.
 \end{example}
 
 As examples~\ref{ex:constant} and \ref{ex:uniform} show, the HIC behaves as
@@ -139,7 +139,7 @@ is.
   determined by $Y^2$ thus $H(X^2 \mid Y^2) = 0$ and $I(X^2, Y^2) = \log 2$.
   Combining these to produce $C^2$ yields:
   \begin{equation}
-    C^2 = (I(X^2; Y^2) - I(X^1; Y^1))^2 = (\log 2 - \log 2)^2 = 0.
+    C_2 = (I(X^2; Y^2) - I(X^1; Y^1))^2 = (\log 2 - \log 2)^2 = 0.
   \end{equation}
   The above argument generalizes to all levels of the hierarchy so $\hic(S) = 0$.
 \end{example}
@@ -150,3 +150,70 @@ the problem this may be desirable in that the alternating seuqence should be
 considered slightly more complex than a constant sequence. This is where
 subjectivitity comes in. The designer should select from these choices
 based on the setting at hand.
+
+\subsection{Comparison to Statistical Complexity}
+\label{statistical_complexity}
+
+The statistical complexity of \citet{crutchfield1989inferring} measures the
+complexity of a system by observing the number of distinct future distributions
+given the present and past states.  Statistical complexity infers a set of
+``causal states'' by collapsing the state variables representing the current
+and past time into equivalence classes which all lead to indistinguishable
+future distributions. The entropy of the distribution of these causal states
+then serves as a measure of the complexity of the process. For futures which
+are ordered or unchanging, the system will have one or a small number of causal
+states and the entropy will be small. Similarly, for futures which are
+uniformly random, the future distributions will be indistinguishable given the
+past and present and the states will similarly collapse into a single or small
+number of causal states. Thus random processes will also have low statistical
+complexity.
+
+Let $X_t$ represent the state variable at the $t$-th time step for a system
+with $N$ state variables per time step. The past light cone
+$\mathcal{X}_{\textrm{P}}$ of $X_t$ with a history of $T_{\textrm{P}}$ time
+steps is given by:
+\begin{equation}
+    \mathcal{X}_{\textrm{P}} =
+        \{X_{i, j} \mid i = t - 1, \ldots, t - T_{\textrm{P}}
+            \;\;\land\;\; j = 1, \ldots, N
+            \;\;\land\;\; X_{i, j} \rightarrow X_t \},
+\end{equation}
+where $A \rightarrow B$ means the state $A$ can influence $B$ (\emph{i.e.} $B$
+is a function of $A$). The future light cone $\mathcal{X}_{\textrm{F}}$ of
+$X_t$ with a future of $T_{\textrm{F}}$ time steps is similarly defined as:
+\begin{equation}
+    \mathcal{X}_{\textrm{F}} =
+        \{X_{i, j} \mid i = t + 1, \ldots, t + T_{\textrm{F}}
+            \;\;\land\;\; j = 1, \ldots, N
+            \;\;\land\;\; X_t \rightarrow X_{i, j} \}.
+\end{equation}
+In words, the past light cone of $X_t$ is the set of states which can influence
+$X_t$ and the future light cone is the set of states which can be influenced by
+$X_t$.
+
+Each past light cone and state variable $X_t$ defines a conditional
+distribution over future light cones $P(\mathcal{X}_{\textrm{F}} \mid
+\mathcal{X}_{\textrm{P}}, X_t)$. We can measure the similarity between to such
+conditional distributions using a statistical divergence $D(P_i \| P_j)$. A
+causal state $C$ represents a set of states $C = \{(\mathcal{X}_{\textrm{P}},
+X_t)\}$ where $D(P_i \| P_j) = 0$ for every pair $(\mathcal{X}_{\textrm{P}},
+X_t)_i$ and $(\mathcal{X}_{\textrm{P}}, X_t)_j$ in $C$. In other words, the
+distribution of future light cones of $(\mathcal{X}_{\textrm{P}}, X_t)_i$ and
+$(\mathcal{X}_{\textrm{P}}, X_t)_j$ are indistinguishable. In practice, we
+relax $D(P_i \| P_j) < \tau$ for some predefined threshold due to finite
+sample sizes. Furthermore, we only require that $D(P_i \| P_j) < \tau$ be
+satisfied for a single $(\mathcal{X}_{\textrm{P}}, X_t)_j$ in $C$ instead of
+all such states.
+
+Unlike HIC, statistical complexity is a measure of process complexity. We can
+use it to observe how the complexity of a system changes over time. We can also
+use statistical complexity as a measure of the global complexity of the system
+by applying it to every state at every time step; as we do in this work.
+
+Perhaps more importantly, statistical complexity can be computed in many
+cases without much difficulty. The distributions of future light cones given
+past light cones and state variables can be estimated for reasonable values of
+$T_\textrm{P}$ and $T_\textrm{F}$. \citet{shalizi2004quantifying} estimate the
+local statistical complexity of circular cellular automata and show
+qualitatively that the measure coorelates well to with the perceived complexity
+of the automata.
