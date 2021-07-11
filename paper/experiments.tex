@@ -3,7 +3,8 @@
 \includegraphics[width=0.7\textwidth]{figures/eca_images_and_complexity}
 \caption{Example ECA rules from the four Wolfram classes. Each ECA has a state
     size of $N=200$ states and is run for $400$ steps. The latter $200$ steps
-    are visualized above. We compute the HIC for each ECA using $L=3$ levels.}
+    are visualized above. We compute the HIC and statistical complexity (SC)
+    for each ECA.}
 \label{fig:eca_images_and_complexity}
 \end{figure}
 
@@ -12,7 +13,7 @@
 \subsection{Experimental Setting}
 
 We examine HIC empirically using elementary cellular automata (ECA). We also
-compare HIC to statistical complexity for varioius ECA. Cells in an ECA
+compare HIC to statistical complexity for various ECA. Cells in an ECA
 can take on one of two states. The update rule for a given state depends on the
 state at the previous time step along with its two neighbors; hence there are
 $2^{(2^3)} = 256$ possible ECAs. \citet{wolfram1983} proposed a four class
@@ -21,19 +22,19 @@ to a constant state, class 2 ECAs tend to exhibit periodic oscillations, class
 3 ECAs display random-like behavior, and class 4 ECAs show complex behavior.
 Complex behavior of an ECA is not well defined and is determined mostly through
 inspection. The complex ECAs usually have various high-level structures
-propagating through time with some degree of apparant randomness interspersed
+propagating through time with some degree of apparent randomness interspersed
 between. Despite the simplicity of the rules, ECAs can yield astonishingly
 complex behavior. Rule 110, for example, has been shown to be computationally
 universal~\citep{cook2004universality}. We follow the Wolfram classification
 given by~\citet[table 2]{martinez2013note} to classify all 256 ECA rules.
 
 For each ECA we use a state size of $N$. The information in the initial state
-requires at least $N/2$ updates to propagate accross the complete state space.
+requires at least $N/2$ updates to propagate across the complete state space.
 We update the ECA for $2N$ time steps and discard the first $N$ which provides
 a buffer for information in the initial state to fully propagate. We use a
 circular update so the cells at the edges are influenced by neighbors at the
 opposite edge of the state.  Because of this, rules which propagate information
-unidirectionaly can influence the full state space after $N$ updates.
+in a single direction can influence the full state space after $N$ updates.
 
 We use the remaining $N \times N$ cells to compute the HIC. At each level we
 set $X^\ell$ and $Y^\ell$, the variables used to compute the mutual information
@@ -49,7 +50,7 @@ Kullback-Leibler divergence with a threshold of $1.0$. We use a past light cone
 with $T_{\textrm{P}}=2$ and a future light cone with $T_{\textrm{F}} = 3$.  For
 each time step the number of states in the light cone grows by two. For
 example, the third time step of the future light cone contains five cells. As
-with HIC we esimtate the distributions using counts over the states.
+with HIC we estimate the distributions using counts over the states.
 
 \begin{figure}[ht!]
 \centering
@@ -83,7 +84,7 @@ compute the HIC over $L\!=\!3$ levels. The HIC is given for each rule above the
 corresponding image. Note that HIC correctly distinguishes rule 110 as being
 the most complex ECA from the remainder, which have HICs very close to zero.
 Note in particular that the HIC of the class 3 ECA (rule 30) is even smaller
-than the corresponding class 2 ECA (rule 2). In this case HIC peaks inbetween
+than the corresponding class 2 ECA (rule 2). In this case HIC peaks in between
 order and disorder, as desired. We also see that the statistical complexity
 (SC) correctly orders the rules from each class. However, unlike HIC the class
 3 ECA (rule 30) has a fairly large statistical complexity. This is the case
@@ -146,7 +147,7 @@ size of $N\!=\!200$, and figure~\ref{fig:hic_levels_500} uses a state size of
 $N\!=\!500$. In both figures, we see that the class 1 and 2 rules (the curves
 overlap at zero) do not grow with an increase in the number of levels. The
 class 4 rule grows but plateaus with the number of levels. We expect to see a
-plateau once the size of the variables $X^\ell$ and $Y^\ell$ fully capture the
+plateau once the size of the variables $X^\ell$ and $Y^\ell$ fully capture
 the largest structures, and so the mutual information should become constant.
 This shows that complexity does not grow via compositions of order from order.
 Interposing disorder somewhere near the level of the largest structures would
@@ -154,7 +155,7 @@ result in further complexity growth.
 
 The class 3 ECA is the only one which exhibits a qualitative difference between
 the two figures. This is simply a finite sample statistical artifact which is
-instuctive to elucidate. In the $N\!=\!200$ case, we do not have enough states to
+instructive to elucidate. In the $N\!=\!200$ case, we do not have enough states to
 estimate the mutual information at the highest level ($\ell\!=\!7$) accurately.
 The mutual information consists of two terms, the entropy of the single
 variable $H(X^\ell)$ and the conditional entropy between the two variables

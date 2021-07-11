@@ -2,16 +2,16 @@
 \label{sec:hic}
 
 We construct a measure for the structural complexity of a system. As motivated
-in section~\ref{sec:finding_complexity}, we want the the complexity to grow at
+in section~\ref{sec:finding_complexity}, we want the complexity to grow at
 the compositions of ordered and disordered subsystems in a hierarchical
-structure. We decompose the overall complexity as the sum of the complexity at
+structure. We construct the overall complexity from the sum of the complexity at
 each composition.
 
 Assume we are given a hierarchical system with $L$ levels. We construct the
 global system complexity from the local complexity computed at each of the
 $L-1$ compositions between consecutive levels. The local complexity measures
 are given by the difference in mutual information of the system at level
-$\ell$ and that of the subsytem at level $\ell - 1$. We denote by $X^{\ell}$ the
+$\ell$ and that of the subsystem at level $\ell - 1$. We denote by $X^{\ell}$ the
 state variable at the $\ell$-th level of the hierarchy. Following
 \citet{simon1991architecture}, we define the span of a level as the
 number of elements from the $\ell - 1$ subsystem used to construct the state
@@ -40,7 +40,7 @@ I(X^\ell; Y^\ell) = H(X^\ell) - H(X^\ell \mid Y^\ell).
 \end{equation}
 The mutual information is large when the $\ell$-th level is highly ordered and
 small when it is highly disordered. Hence, the values $C_\ell$ will be large
-exactly at the transtion points between order and disorder (or vice-versa).  We
+exactly at the transition points between order and disorder (or vice-versa).  We
 use the level complexities $C_\ell$ to construct the overall system complexity.
 
 \begin{definition}[Hierarchical Information Content]
@@ -121,7 +121,7 @@ As examples~\ref{ex:constant} and \ref{ex:uniform} show, the HIC behaves as
 expected when the system exhibits complete order or complete disorder. In both
 of these examples the HIC was zero because the mutual information at each level
 was zero. In the following example, we see slightly more interesting behavior,
-where the individual mutual informations are not zero, but the resulting HIC
+where the mutual information at each level is nonzero, but the resulting HIC
 is.
 
 \begin{example}
@@ -144,11 +144,11 @@ is.
   The above argument generalizes to all levels of the hierarchy so $\hic(S) = 0$.
 \end{example}
 
-In example \ref{ex:repeats} we used overlaping windows to construct $X^2$. If
+In example \ref{ex:repeats} we used overlapping windows to construct $X^2$. If
 we had chosen disjoint windows the HIC would be small but nonzero. Depending on
-the problem this may be desirable in that the alternating seuqence should be
+the problem this may be desirable in that the alternating sequence should be
 considered slightly more complex than a constant sequence. This is where
-subjectivitity comes in. The designer should select from these choices
+subjectiveness comes in. The designer should select from these choices
 based on the setting at hand.
 
 \subsection{Comparison to Statistical Complexity}
@@ -215,5 +215,5 @@ cases without much difficulty. The distributions of future light cones given
 past light cones and state variables can be estimated for reasonable values of
 $T_\textrm{P}$ and $T_\textrm{F}$. \citet{shalizi2004quantifying} estimate the
 local statistical complexity of circular cellular automata and show
-qualitatively that the measure coorelates well to with the perceived complexity
+qualitatively that the measure correlates well to with the perceived complexity
 of the automata.

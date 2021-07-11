@@ -1,31 +1,31 @@
 \section{Introduction}
 \label{sec:intro}
 
-In digital simulations of life the goal is to induce the emergence of certain
-structures or processes. These might include self-replicating or autopoietic
-organisms, evolutionary processes, and intelligent behavior. Often identifying
-the growth of these structures and processes is reduced to identifying a growth
-in complexity. Hence designers of artificial life simulations are interested in
-the question of measuring complexity.
+A common goal in digital simulations of life is to induce the emergence of
+certain structures or processes. These might include self-replicating or
+autopoietic organisms, evolutionary processes, and intelligent behavior. Often
+identifying the growth of these structures and processes is reduced to
+identifying a growth in complexity. Hence, designers of artificial life
+simulations are interested in the question of measuring complexity.
 
-As artificial life simulations scale, quantitative assessment of the
-simulation's success in meeting the designer's criteria is essential.
-Identifying and selecting amongst the design choices of a given simulation in a
-qualitative manner is not scalable and likely to admit experimental bias. As an
-analogy, imagine constructing a machine-learning model to learn a given task
-without an objective function. Curiosity driven exploration and reinforcement
-learning can result in the model learning to successfully complete the task.
-However, from the empiricists perspective, assessing the ability of the model
-at completing the task is critical. At the very least, some criterion is needed
-for evaluating the model, if not training it. Similarly, in artificial life,
-while the measure of complexity is typically not used as an objective to guide
-the active simulation, it is at least essential to evaluate the post-hoc
-success of the simulation.
+As artificial life simulations scale, quantitatively assessing the simulation's
+success in meeting the designer's criteria is essential.  Identifying and
+selecting amongst the design choices of a given simulation in a qualitative
+manner is not scalable and likely to admit experimental bias. As an analogy,
+imagine constructing a machine-learning model to learn a given task without an
+objective function. Curiosity driven exploration and reinforcement learning can
+result in the model learning to successfully complete the task.  However, from
+the empiricists perspective, assessing the ability of the model at completing
+the task is critical. At the very least, some criterion is needed for
+evaluating the model, if not training it. Similarly, in artificial life, while
+the measure of complexity is typically not used as an objective to guide the
+active simulation, it is at least essential to evaluate the post hoc success of
+the simulation.
 
-Complexity is notoriously ill-defined, subjective, and hence difficult to
-measure quantitatively~\citep{gell2002complexity, mitchell2009complexity,
+Complexity is notoriously ill-defined, subjective, and difficult to measure
+quantitatively~\citep{gell2002complexity, mitchell2009complexity,
 wiesner2019measuring}. One of the challenges in measuring complexity is
-identifying the ``Goldilock's zone'' between total order and total disorder
+identifying the ``Goldilocks zone'' between total order and total disorder
 where complexity may reside (\emph{c.f.}
 figure~\ref{fig:complexity_and_entropy}). Information theoretic measures such
 as Shannon entropy~\citep{shannon1948} and Kolmogorov complexity (sometimes
@@ -56,9 +56,9 @@ compute~\citep{crutchfield1989inferring, gell1996information,
 grassberger1986toward}.
 
 We propose yet another a measure complexity, Hierarchical Information Content
-(HIC). The central tenent of HIC is that complexity growth is found at the
+(HIC). The central tenet of HIC is that complexity growth is found at the
 compositions of ordered and disordered systems. We elaborate and defend the
-motivating princpiles of HIC in section~\ref{sec:finding_complexity}. We do not
+motivating principles of HIC in section~\ref{sec:finding_complexity}. We do not
 intend for HIC to serve as an ersatz for complexity in a general sense, and in
 fact we make make no further attempt to rigorously define complexity. Rather,
 we propose HIC as a measure which quantitatively captures some of the essential
