@@ -92,13 +92,13 @@ because the ECA exhibits randomness over the spatial dimension but has some
 structure over the temporal dimensions.
 
 Figure~\ref{fig:complexity_by_class} demonstrates that both HIC and statistical
-complexity can distinguish between the four Wolfram complexity classes. These
-results are obtained by sampling $100$ rules for each of the four ECA classes.
-Each rule is run from a random initial state for $1000$ steps. We use a state
-size of $N\!=\!500$ and hence a $500 \times 500$ grid to compute the
-corresponding complexity measure. For these experiments we use $L=6$ levels for
-the HIC. The class medians are well separated by the median HIC
-(fig.~\ref{fig:hic_by_class}) with the 95\% confidence interval of class 4
+complexity can distinguish the class 4 ECA from the other three complexity
+classes. These results are obtained by sampling $100$ rules for each of the
+four ECA classes. Each rule is run from a random initial state for $1000$
+steps. We use a state size of $N\!=\!500$ and hence a $500 \times 500$ grid to
+compute the corresponding complexity measure. For these experiments we use
+$L=6$ levels for the HIC. The class medians are well separated by the median
+HIC (fig.~\ref{fig:hic_by_class}) with the 95\% confidence interval of class 4
 distinct from that of any other class.
 
 We also plot in figure~\ref{fig:hic_by_class} the first twenty trials for each
@@ -114,10 +114,10 @@ the space dimension.
 The statistical complexity medians are less well separated than those computed
 from the HIC. On the other hand, the statistical complexity
 (fig.~\ref{fig:sc_by_class}) has narrower 95\% confidence intervals for all
-classes. Overall, both measures are quite good at distinguish complex class 4
-ECA from the rest. Both measures could be useful depending on whether one
-intends to measure process or structural complexity. The two may also be
-combined to produce a single more comprehensive measure.
+classes. Overall, both measures are quite good at distinguishing complexity
+class 4 ECA from the remainder. Both measures could be useful depending on
+whether one intends to measure process or structural complexity. The two may
+also be combined to produce a single more comprehensive measure.
 
 \subsection{Number of Levels}
 
@@ -140,18 +140,19 @@ combined to produce a single more comprehensive measure.
 \label{fig:hic_vs_levels}
 \end{figure}
 
-Using the same four rules (class 1 rule 128, class 2 rule 2, class 3 rule 30
-and class 4 rule 110), we observe the effect of the number of levels on the HIC
-in figure~\ref{fig:hic_vs_levels}. Figure~\ref{fig:hic_levels_200} uses a state
-size of $N\!=\!200$, and figure~\ref{fig:hic_levels_500} uses a state size of
-$N\!=\!500$. In both figures, we see that the class 1 and 2 rules (the curves
-overlap at zero) do not grow with an increase in the number of levels. The
-class 4 rule grows but plateaus with the number of levels. We expect to see a
-plateau once the size of the variables $X^\ell$ and $Y^\ell$ fully capture
-the largest structures, and so the mutual information should become constant.
-This shows that complexity does not grow via compositions of order from order.
-Interposing disorder somewhere near the level of the largest structures would
-result in further complexity growth.
+Using the same four rules (class 1 rule 128, class 2 rule 2, class 3 rule 30,
+and class 4 rule 110), we observe the effect of the number of levels used to
+compute the HIC in figure~\ref{fig:hic_vs_levels}.
+Figure~\ref{fig:hic_levels_200} uses a state size of $N\!=\!200$, and
+figure~\ref{fig:hic_levels_500} uses a state size of $N\!=\!500$. In both
+figures, we see that the class 1 and 2 rules (the curves overlap at zero) do
+not grow with an increase in the number of levels. The class 4 rule grows but
+plateaus with the number of levels. We expect to see a plateau once the size of
+the variables $X^\ell$ and $Y^\ell$ fully capture the largest structures, and
+so the mutual information should become constant.  This shows that complexity
+does not grow via compositions of order from order.  Interposing disorder
+somewhere near the level of the largest structures would result in further
+complexity growth.
 
 The class 3 ECA is the only one which exhibits a qualitative difference between
 the two figures. This is simply a finite sample statistical artifact which is
